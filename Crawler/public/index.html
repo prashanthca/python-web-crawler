@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Python Web Crawler</title>
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/inter-ui@3.3.4/inter-hinted.css"/>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#get-links").click(function(){
+				$.ajax({
+					'url':'/getlinks',
+					'type': 'POST',
+					'contentType': 'application/json',
+					'data': JSON.stringify({
+						'url': $("#url").val()
+					}),
+					success: function(data){
+						if(data.links.length > 0)
+						{
+							$("#links-list").empty();
+							var _links =JSON.parse(data.links);
+							_links.forEach(function(e){
+								$("#links-list").append("<li>"+e+"</li>");
+							});
+						}
+					}
+				})
+			});
+		});
+	</script>
+</head>
+<body>
+<h1>Python Web Crawler</h1>
+<input id="url" type="text" placeholder="Enter a URL">
+<input id="level" type="text" placeholder="Enter the level">
+<button id="get-links">Get Links</button>
+<ul id="links-list">
+</ul>
+</body>
+</html>
