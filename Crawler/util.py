@@ -13,10 +13,11 @@ def GetLinksUtil(siteData):
 	parsed_url = urlparse(site['url'])
 	links = list()
 	for x in soup.find_all('a'):
-		if x['href'] != '/' and x['href'].startswith('/') and parsed_url.scheme+'://'+parsed_url.hostname+x['href'] not in links:
-			links.append(parsed_url.scheme+'://'+parsed_url.hostname+x['href'])
-		elif re.search('(http|https):\/\/(.*?)\.gale\.agency', x['href']) is not None and x['href'] not in links and urlparse(x['href']).path != '/':
-			links.append(x['href'])
+		if x.has_attr('href'):
+			if x['href'] != '/' and x['href'].startswith('/') and parsed_url.scheme+'://'+parsed_url.hostname+x['href'] not in links:
+				links.append(parsed_url.scheme+'://'+parsed_url.hostname+x['href'])
+			elif re.search('(http|https):\/\/(.*?)\.gale\.agency', x['href']) is not None and x['href'] not in links and urlparse(x['href']).path != '/':
+				links.append(x['href'])
 	return links
 
 def GetImagesUtil(siteData):
