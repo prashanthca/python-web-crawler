@@ -24,7 +24,7 @@ from util import GetImagesUtil, GetLinksUtil
 def GetLinks(siteData):
 	try:
 		res = GetLinksUtil(siteData)
-		return JsonResponse({'links': json.dumps(res)},safe=False)
+		return JsonResponse({'links': res},safe=False)
 	except ValueError as e:
 		return Response(e.args[0],status.HTTP_400_BAD_REQUEST)
 
@@ -32,7 +32,7 @@ def GetLinks(siteData):
 def GetImages(siteData):
 	try:
 		res = GetImagesUtil(siteData)
-		return JsonResponse({'images': json.dumps(res)},safe=False)
+		return JsonResponse({'images': res},safe=False)
 	except ValueError as e:
 		return Response(e.args[0],status.HTTP_400_BAD_REQUEST)
 
