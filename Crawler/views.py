@@ -15,7 +15,7 @@ from django.contrib.staticfiles.views import serve
 import json
 
 sys.path.append(os.getcwd())
-from util import GetImagesUtil, GetLinksUtil
+from util import GetImagesUtil, GetLinksUtil, GetTree
 
 
 # Create your views here.
@@ -23,15 +23,16 @@ from util import GetImagesUtil, GetLinksUtil
 @api_view(["POST"])
 def GetLinks(siteData):
 	try:
-		res = GetLinksUtil(siteData)
-		return JsonResponse({'links': res},safe=False)
+		res = GetTree(siteData)
+		return JsonResponse({'treeView': res},safe=False)
 	except ValueError as e:
 		return Response(e.args[0],status.HTTP_400_BAD_REQUEST)
 
 @api_view(["POST"])
 def GetImages(siteData):
 	try:
-		res = GetImagesUtil(siteData)
+		site = json.loads(siteData.body)
+		res = GetImagesUtil(site["url"])
 		return JsonResponse({'images': res},safe=False)
 	except ValueError as e:
 		return Response(e.args[0],status.HTTP_400_BAD_REQUEST)

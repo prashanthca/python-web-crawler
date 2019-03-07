@@ -26,26 +26,25 @@ define(['backbone', 'jquery'], function (Backbone, $) {
 				this._container.find(".links-view").remove();
 				this._container.find("#links-views-container-header #view-title").text("Loading...");
 				this._container.find("#links-views-container-header").removeClass("bb");
-				this._views["level1"] = $("<div id='lvl1' class='links-view'><ul class='list-group'></ul></div>");
+				this._views["level1"] = $("<div id='lvl1' class='links-view'></div>");
 				this._container.append(this._views['level1']);
 				$.ajax({
 					'url': '/getlinks',
 					'type': 'POST',
 					'contentType': 'application/json',
 					'data': JSON.stringify({
-						'url': url
+						'url': url,
+						'level': level 
 					}),
 					success: function(data) {
-						var _links = JSON.parse(data.links);
+						var _links = data.treeView; //JSON.parse(data.links);
 						window._levels["1"] = _links;
-						if(_links.length > 0)
-						{
-							_links.forEach(function(link){
-								self._views["level1"].find(".list-group").append("<li class='list-group-item' level='1'>"+link+"</li>");
-							});
-							self._container.find("#links-views-container-header").addClass("bb");
-						}
-						self._container.find("#links-views-container-header #view-title").text("Level 1");
+						self._views["level1"].tree({
+							data: _links,
+							autoOpen: false
+						});
+						self._container.find("#links-views-container-header").addClass("bb");
+						self._container.find("#links-views-container-header #view-title").text("Links Tree");
 					}
 				});
 			}
